@@ -18,6 +18,8 @@ class ArticleManager(models.Manager):
 
 
 class Article(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=100, db_index=True)
     context = models.TextField()
+    article_type = models.CharField(max_length=30)
     objects = ArticleManager()

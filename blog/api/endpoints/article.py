@@ -44,3 +44,13 @@ class ArticleView(APIView):
 
     def post(self, request):
         return Response({'post': 'word'})
+
+
+class Articles(APIView):
+    throttle_classes = (NoThrottling, )
+    authentication_classes = (MethodAuthentication, )
+    permission_classes = ()
+
+    def get(self, request):
+        articles = Article.objects.all()[-6:]
+        return get_article_info(articles)

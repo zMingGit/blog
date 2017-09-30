@@ -1,18 +1,13 @@
-require.config({
-    paths: {
-        //if jquery file name is jquery.js ,there is no need to exist here.
-        jquery: 'lib/jquery-3.2.1',
-        underscore: 'lib/underscore'
-    },
-    shim: {
-        underscore: {
-            exports: '_'
-        },
-        backbone: {
-            deps:[
-                'underscore',
-                'jquery'
-            ],
+define([
+    'jquery',
+    'underscore',
+], function($, _) {
+    return {
+        getUrl: function(options) {
+            var siteRoot = blog.config.siteRoot;
+            switch (options.name) {
+                case 'index_articles': return siteRoot + 'api/endpoints/index_articles';
+            }
         }
     }
-});
+})

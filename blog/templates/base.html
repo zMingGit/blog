@@ -61,8 +61,21 @@
         {% block context %}
         {% endblock %}
 
-    </body>
+    {% include 'js/templates.html' %}
+    <script type="text/javascript">
+    var app = {
+        config: {
+            mediaUrl: '{{ MEDIA_URL }}',
+            siteRoot: '{{ SITE_ROOT }}'
+        },
+        pageOptions:{
+            site_root: "{{ SITE_ROOT }}",
+            csrfToken: "{{ csrf_token }}"
+        }
+    }
+    </script>
     <script data-main="{% static "scripts/main.js" %}" src="{% static "scripts/lib/require.js" %}"></script>
     <script src="{% static "scripts/lib/jquery-3.2.1.js" %}"></script>
     <script src="{% static "scripts/lib/bootstrap.js" %}"></script>
+    </body>
 </html>

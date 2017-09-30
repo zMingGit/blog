@@ -1,27 +1,29 @@
 define([
     'jquery',
-    'lib/backbone',
+    'backbone',
     'common',
     'views/index',
-    'views/article'
-], function($, Backbone, Common, Index, Article){
+], function($, Backbone, Common, IndexView){
     "use strict";
 
     var Router = Backbone.Router.extend({
-        router: {
+        routes: {
             '': 'showIndex',
+            'index': 'showIndex',
             '*actions': 'showIndex'
         },
 
         initialize: function(){
             //Common.prepareApiCsrf();
-            this.index = Index();
+            this.indexView = new IndexView();
+            this.indexView.show();
         },
 
         showIndex: function(){
-           this.index.show(); 
-        }
+            this.indexView.show();
+        },
+
     });
 
     return Router;
-})
+});

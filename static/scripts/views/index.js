@@ -1,11 +1,27 @@
 define([
     'jquery',
     'underscore',
-], function($, _){
-    var IndexView = Bachbone.View.extend({
+    'backbone',
+    'views/index-articles'
+], function($, _, Backbone, IndexArticlesView){
+    var IndexView = Backbone.View.extend({
         id: 'index',
+        template: _.template($('#index-articles-tmpl').html()),
 
-        template: _.template($('index-tmpl').html()),
+        initialize: function() {
+            this.indexArticlesView =  new IndexArticlesView();
+            this.render();
+        },
+
+        render: function() {
+            this.$el.html(this.template());
+        },
+
+
+        show: function() {
+            alert('go');
+            this.indexArticlesView.show();
+        }
     });
     return IndexView;
-})
+});

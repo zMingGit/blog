@@ -36,3 +36,13 @@
     margin: 1px 0px 1px 0px;
     display: block;
 }
+
+.recommonds {
+    position: fixed;
+    top: 400px;
+    right: 100px;
+}
+
+.recommond {
+    margin-bottom: 20px;
+}

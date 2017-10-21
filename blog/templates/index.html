@@ -1,128 +1,25 @@
 {% extends "base.html" %}
 {% block context %}
-
-<div class="col-xs-6 col-md-6 col-sm-6 col-xs-offset-2 col-md-offset-2 col-xm-offset-2">
-    <div>
-        <span class="index-articles-title">
-            ttitletitletitletitletitletitletitletitletitletitletitleitle
-        </span>
-        <span class="index-articles-context">
-            cccontextcontextcontextcontextcontextcontcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontextccontextcontextcon
-            textcontextcontextcontextcontextcontextcoccontextcontextcontextcontextcontextcontccontextcontextcontextcontextcontextcontccontextcontextcontextcontextcontextcontccontextcontextcontextcontextcontextcontntextco
-            ntextcontextontextccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-        </span>
-        <span class="index-articles-tag">
-            tag ...
-        </span>
+    <div class="col-xs-7 col-md-7 col-sm-7 col-xs-offset-1 col-md-offset-1 col-xm-offset-1">
+        {% for article in articles %}
+            <div uuid="{{ article.uuid }}" class="article-btn col-xs-12 col-md-12 col-sm-12">
+                <div>
+                    {{ article.title|safe }}
+                </div>
+                <div class="navbar-text">
+                {{ article.context|safe }}
+                </div>
+            </div>
+            <br/>
+        {% endfor %}
     </div>
-    <div>
-        <span class="index-articles-title">
-            ttitletitletitletitletitletitletitletitletitletitletitleitle
-        </span>
-        <span class="index-articles-context">
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontextccontextcontextcon
-            textcontextcontextcontextcontextcontextcontextco
-            ntextcontextontextccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-        </span>
-        <span class="index-articles-tag">
-            tag ...
-        </span>
+    <div class="col-lg-3 hidden-md hidden-sm hidden-xs recommonds pull-right">
+        {% for recommond in recommonds %}
+            <div uuid="{{ recommond.uuid }}"class="article-btn recommond">
+                <a href="####">
+                    {{ recommond.title|safe }}
+                </a>
+            </div>
+        {% endfor %}
     </div>
-    <div>
-        <span class="index-articles-title">
-            ttitletitletitletitletitletitletitletitletitletitletitleitle
-        </span>
-        <span class="index-articles-context">
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontextccontextcontextcon
-            textcontextcontextcontextcontextcontextcontextco
-            ntextcontextontextccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-        </span>
-        <span class="index-articles-tag">
-            tag ...
-        </span>
-    </div>
-    <div>
-        <span class="index-articles-title">
-            ttitletitletitletitletitletitletitletitletitletitletitleitle
-        </span>
-        <span class="index-articles-context">
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontextccontextcontextcon
-            textcontextcontextcontextcontextcontextcontextco
-            ntextcontextontextccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-        </span>
-        <span class="index-articles-tag">
-            tag ...
-        </span>
-    </div>
-    <div>
-        <span class="index-articles-title">
-            ttitletitletitletitletitletitletitletitletitletitletitleitle
-        </span>
-        <span class="index-articles-context">
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontextccontextcontextcon
-            textcontextcontextcontextcontextcontextcontextco
-            ntextcontextontextccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-        </span>
-        <span class="index-articles-tag">
-            tag ...
-        </span>
-    </div>
-    <div>
-        <span class="index-articles-title">
-            ttitletitletitletitletitletitletitletitletitletitletitleitle
-        </span>
-        <span class="index-articles-context">
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontextccontextcontextcon
-            textcontextcontextcontextcontextcontextcontextco
-            ntextcontextontextccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-        </span>
-        <span class="index-articles-tag">
-            tag ...
-        </span>
-    </div>
-
-</div>
-<div class="col-xs-2 col-md-2 col-sm-2">
-    <div>
-        <span class="index-active-articles-title">
-            ttitletitletitletitletitletitletitletitletitletitletitleitle
-        </span>
-        <span class="index-active-articles-context">
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-        </span>
-        <span class="index-active-articles-tag">
-            tag ...
-        </span>
-    </div> 
-    <div>
-        <span class="index-active-articles-title">
-            ttitletitletitletitletitletitletitletitletitletitletitleitle
-        </span>
-        <span class="index-active-articles-context">
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-        </span>
-        <span class="index-active-articles-tag">
-            tag ...
-        </span>
-    </div> 
-    <div>
-        <span class="index-active-articles-title">
-            ttitletitletitletitletitletitletitletitletitletitletitleitle
-        </span>
-        <span class="index-active-articles-context">
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-            ccontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextontext
-        </span>
-        <span class="index-active-articles-tag">
-            tag ...
-        </span>
-    </div> 
-</div>
-
-
 {% endblock %}

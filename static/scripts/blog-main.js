@@ -1,6 +1,6 @@
-define([
-    'router'
-], function(Router){
-    router = new Router();
-    Backbone.history.start();
+$(function(){
+    $(".article-btn").click(function(){
+        link = '/api/article/?type=uuid&uuid=' + $(this).attr('uuid');
+        $(window).attr('location', link);
+    });
 })

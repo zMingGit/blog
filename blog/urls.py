@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from blog.views import base
+from blog.api.endpoints.index import IndexView
+from blog.api.endpoints.articles import ArticlesView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('^$',  base, name='base'),
+    url('^$',  IndexView.as_view(), name='index'),
+    url('^articles/', ArticlesView.as_view(), name='articles'),
     url(r'^api/', include('blog.api.urls')),
 ]

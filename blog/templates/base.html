@@ -18,7 +18,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Index</a>
+                <a class="navbar-brand" href="/">Index</a>
               </div>
 
               <!-- Collect the nav links, forms, and other content for toggling -->
@@ -27,15 +27,13 @@
                   <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Articles <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Python</a></li>
-                      <li role="separator" class="divider"></li>
-                      <li><a href="#">Net core</a></li>
-                      <li><a href="#">Shell</a></li>
-                      <li role="separator" class="divider"></li>
-                      <li><a href="#">Other</a></li>
+                      {% for article_type in article_types %}
+                        <li><a href="/articles/?limit={{ article_type }}">{{article_type}}</a></li>
+                        <li role="separator" class="divider"></li>
+                      {% endfor %}
                     </ul>
                   </li>
-                  <li><a>Picture</a></li>
+                  <li><a href="#">Picture</a></li>
                 </ul>
                 <form class="navbar-form navbar-left">
                   <div class="form-group">
@@ -45,7 +43,7 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                   <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About me <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About me <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                       <li><a href="#">Profile</a></li>
                       <li><a href="#">Favorite game</a></li>
@@ -61,21 +59,16 @@
         {% block context %}
         {% endblock %}
 
-    {% include 'js/templates.html' %}
-    <script type="text/javascript">
-    var app = {
-        config: {
-            mediaUrl: '{{ MEDIA_URL }}',
-            siteRoot: '{{ SITE_ROOT }}'
-        },
-        pageOptions:{
-            site_root: "{{ SITE_ROOT }}",
-            csrfToken: "{{ csrf_token }}"
-        }
-    }
-    </script>
-    <script data-main="{% static "scripts/main.js" %}" src="{% static "scripts/lib/require.js" %}"></script>
+    <footer class="footer navbar-fixed-bottom ">
+        <div class="container">
+            written by me
+        </div>
+    </footer>
+
     <script src="{% static "scripts/lib/jquery-3.2.1.js" %}"></script>
     <script src="{% static "scripts/lib/bootstrap.js" %}"></script>
+    <script src="{% static "scripts/blog-main.js" %}"></script>
+    {% block js_ex %}
+    {% endblock %}
     </body>
 </html>

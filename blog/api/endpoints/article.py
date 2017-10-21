@@ -1,9 +1,6 @@
-import markdown
-
 from django.shortcuts import render_to_response
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 
 from .throttling import NoThrottling
@@ -17,40 +14,28 @@ class ArticleView(APIView):
     permission_classes = ()
 
     def get(self, request):
-        op = request.GET.get('op', None)
+        op = request.GET.get('type', None)
         if op is None or op not in ['uuid', 'title']:
             return Response('invalid type', status.HTTP_400_BAD_REQUEST)
 
         if op == 'uuid':
             uuid = request.GET.get('uuid', None)
             if uuid is None:
-                return Response('uuid can not be empty', status.HTTP_400_BAD_REQUEST)
+                return Response('uuid can not be empty',
+                                status.HTTP_400_BAD_REQUEST)
             data = Article.objects.get_article_by_id(uuid)
         elif op == 'title':
             title = request.GET.get('title', None)
             if title is None:
-                return Response('title can not be empty', status.HTTP_400_BAD_REQUEST)
+                return Response('title can not be empty',
+                                status.HTTP_400_BAD_REQUEST)
             data = Article.objects.get_article_by_title(title)
         if data is None:
             return Response("can't found this article")
-        allowed_tags = ['a', 'abbr', 'acronym', 'b',
-                        'blockquote', 'code', 'em',
-                        'i', 'li', 'ol', 'pre', 'strong',
-                        'ul', 'h1', 'h2', 'h3', 'p', 'br', 'ins', 'del']
-        return render_to_response('article.html',{
+        return render_to_response('article.html', {
             'titile': data.title,
-            'context': markdown.markdown(data.context, output_format='html', extensions=['nl2br', 'del_ins'], tags=allowed_tags, strip=True)
+            'context': data.context
         })
 
     def post(self, request):
-        return Response({'post': 'word'})
-
-
-class Articles(APIView):
-    throttle_classes = (NoThrottling, )
-    authentication_classes = (MethodAuthentication, )
-    permission_classes = ()
-
-    def get(self, request):
-        articles = Article.objects.all()[-6:]
-        return get_article_info(articles)
+        return Response({'post': 'make sure has been input the password'})

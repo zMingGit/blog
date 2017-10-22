@@ -18,10 +18,12 @@ from django.contrib import admin
 
 from blog.api.endpoints.index import IndexView
 from blog.api.endpoints.articles import ArticlesView
+from blog.api.endpoints.search import SearchView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('^$',  IndexView.as_view(), name='index'),
     url('^articles/', ArticlesView.as_view(), name='articles'),
+    url('^search/', SearchView.as_view(), name='search'),
     url(r'^api/', include('blog.api.urls')),
 ]

@@ -3,6 +3,7 @@ import markdown
 import django.utils.timezone as timezone
 
 from django.db import models
+from django.db.models import Q
 from blog.api.endpoints.constant import ALLOWED_TAGS
 
 
@@ -23,6 +24,8 @@ class ArticleManager(models.Manager):
                                                             'del_ins'],
                                                 tags=ALLOWED_TAGS,
                                                 strip=True)
+            article.context = article.context.replace('<code>', '<pre>')
+            article.context = article.context.replace('</code>', '</pre>')
             return article
         except self.model.DoesNotExist:
             return None
@@ -41,6 +44,8 @@ class ArticleManager(models.Manager):
                                                 extensions=['nl2br',
                                                             'del_ins'],
                                                 tags=ALLOWED_TAGS, strip=True)
+            article.context = article.context.replace('<code>', '<pre>')
+            article.context = article.context.replace('</code>', '</pre>')
             return article
         except self.model.DoesNotExist:
             return None
@@ -59,6 +64,8 @@ class ArticleManager(models.Manager):
                                                 extensions=['nl2br',
                                                             'del_ins'],
                                                 tags=ALLOWED_TAGS, strip=True)
+            article.context = article.context.replace('<code>', '<pre>')
+            article.context = article.context.replace('</code>', '</pre>')
         return articles
 
     def get_all_article_type(self):
@@ -79,6 +86,28 @@ class ArticleManager(models.Manager):
                                                 extensions=['nl2br',
                                                             'del_ins'],
                                                 tags=ALLOWED_TAGS, strip=True)
+            article.context = article.context.replace('<code>', '<pre>')
+            article.context = article.context.replace('</code>', '</pre>')
+        return articles
+
+    def get_articles_by_search(self, search_test):
+        #articles = super(ArticleManager, self).filter(Q(title__contains=search_test)|
+        #                                              Q(context__contains=search_test)).order_by('-create_time')[:6]
+        articles = super(ArticleManager, self).filter(title__contains=search_test).order_by('-create_time')[:6]
+        for article in articles:
+            article.title = markdown.markdown(article.title,
+                                              output_format='html',
+                                              extensions=['nl2br',
+                                                          'del_ins'],
+                                              tags=ALLOWED_TAGS,
+                                              strip=True)
+            article.context = markdown.markdown(article.context,
+                                                output_format='html',
+                                                extensions=['nl2br',
+                                                            'del_ins'],
+                                                tags=ALLOWED_TAGS, strip=True)
+            article.context = article.context.replace('<code>', '<pre>')
+            article.context = article.context.replace('</code>', '</pre>')
         return articles
 
 

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
+    'blog',
     'blog.article',
     'blog.comment',
     'blog.tag',

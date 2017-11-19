@@ -3,7 +3,7 @@
 {% block context %}
     <div class="index-articles col-xs-7 col-md-7 col-sm-7 col-xs-offset-2 col-md-offset-2 col-xm-offset-2">
         {% for article in articles %}
-            <div uuid="{{ article.uuid }}" class="article-btn col-xs-12 col-md-12 col-sm-12">
+            <div uuid="{{ article.uuid }}" class="article col-xs-12 col-md-12 col-sm-12">
                 <div>
                     {{ article.title|safe }}
                 </div>

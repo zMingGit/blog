@@ -1,6 +1,7 @@
 $(function(){
     $(".article-btn").click(function(){
-        link = '/api/article/?type=uuid&uuid=' + $(this).attr('uuid');
+        $article = $(this).parent().parent()
+        link = '/api/article/?type=uuid&uuid=' + $article.attr('uuid');
         $(window).attr('location', link);
     });
 

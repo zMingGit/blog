@@ -48,7 +48,7 @@
     <script src="{% static "live2dw/lib/L2Dwidget.min.js" %}"></script>
   </head>
   <body>
-    <canvas id="live2dcanvas" width="300" height="600" style="position: fixed; left:0px; opacity: 1; bottom: -20px; z-index: 99999; pointer-events: none;"></canvas>
+    <canvas id="live2dcanvas" width="200" height="400" style="position: fixed; left:0px; opacity: 1; bottom: -20px; z-index: 99999; pointer-events: none;"></canvas>
     <script>
       var config = {"model":{"jsonPath":"{% static "live2dw/assets/shizuku.model.json" %}"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}};
       L2Dwidget.init(config);

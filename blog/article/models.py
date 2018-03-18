@@ -34,6 +34,8 @@ class ArticleManager(models.Manager):
     def get_article_by_title(self, title):
         try:
             article = super(ArticleManager, self).get(title=title)
+            if len(article) > 1:
+                article = article[0]
             article.title = markdown.markdown(article.title,
                                               output_format='html',
                                               extensions=['nl2br',

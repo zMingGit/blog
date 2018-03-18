@@ -12,9 +12,8 @@ class IndexView(APIView):
     permission_classes = ()
 
     def get(self, request):
-        page = request.GET.get('page', None)
+        page = request.GET.get('page', 1)
         index = True
-        articles = Article.objects.get_index_articles(0, 5)
         if not isinstance(page, int) or page is None:
             pass
             
@@ -29,6 +28,7 @@ class IndexView(APIView):
             if len(articles) != 6:
                 more = False
         else:
+            articles = Article.objects.get_index_articles(0, 5)
             back = False
         
 

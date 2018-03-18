@@ -1,5 +1,5 @@
 import re
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -33,12 +33,10 @@ class ArticleView(APIView):
             data = Article.objects.get_article_by_title(title)
         if data is None:
             return Response("can't found this article")
-        article_types = Article.objects.get_all_article_type()
         re_html = re.compile('<.*?>')
         data.title = re_html.sub('', data.title)
-        return render_to_response('article.html', {
-            'article_types': article_types,
-            'title': 'Z-M | ' + data.title,
+        return render(request, 'article.html', {
+            'title': data.title,
             'context': data.context
         })
 

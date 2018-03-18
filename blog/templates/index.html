@@ -1,28 +1,109 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% load article_filter %}
 {% block context %}
-    <div class="index-articles col-xs-7 col-md-7 col-sm-7 col-xs-offset-2 col-md-offset-2 col-xm-offset-2">
+    <link rel="stylesheet" href="{% static "css/font-googleapi.css" %}">
+
+    <div class="info_button">
+      <i class="material-icons">dehaze</i>
+    </div>
+
+
+    <div class="demo-blog mdl-layout mdl-js-layout has-drawer is-upgraded">
+      <main class="mdl-layout__content">
+        <div class="demo-blog__posts mdl-grid">
+
+
+         {% if index %}
+          <div class="mdl-card coffee-pic mdl-shadow--6dp mdl-cell mdl-cell--8-col">
+            <div class="mdl-card__media mdl-color-text--grey-50">
+              <h3><a href="entry.html">Coffee Pic</a></h3>
+            </div>
+            <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
+              <div class="minilogo"></div>
+              <div>
+                <strong>The Newist</strong>
+                <span>2 days ago</span>
+              </div>
+            </div>
+          </div>
+          <div class="mdl-card something-else mdl-shadow--6dp mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop">
+            <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent">
+              <i class="material-icons mdl-color-text--white" role="presentation">add</i>
+              <span class="visuallyhidden">add</span>
+            </button>
+            <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
+                <img src="{% static "images/logo.png" %}">
+              +1,337
+            </div>
+            <div class="mdl-card__supporting-text meta meta--fill mdl-color-text--grey-600">
+              <div>
+                <strong>The Newist</strong>
+              </div>
+              <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="menubtn">
+                <li class="mdl-menu__item">RSS</li>
+                <li class="mdl-menu__item"></li>
+                <li class="mdl-menu__item">Favorite</li>
+                <li class="mdl-menu__item">Search</li>
+              </ul>
+              <button id="menubtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+                <i class="material-icons" role="presentation">more_vert</i>
+                <span class="visuallyhidden">show menu</span>
+              </button>
+            </div>
+          </div>
+        {% endif %}
+
         {% for article in articles %}
-            <div uuid="{{ article.uuid }}" class="article col-xs-12 col-md-12 col-sm-12">
-                <div>
-                    {{ article.title|safe }}
+            <div class="articleCard mdl-card on-the-road-again mdl-shadow--6dp mdl-cell mdl-cell--12-col" uuid="{{ article.uuid }}">
+                <div class="mdl-card__media mdl-color-text--grey-50">
+                    <h3><a href="####">{{article.title|safe}}</a></h3>
                 </div>
-                <div class="navbar-text">
-                {{ article.context|index_context|safe }}
+                <div class="mdl-color-text--grey-600 mdl-card__supporting-text">
+                    {{ article.intro|safe }}
+                </div>
+                <div class="authorCard mdl-card__supporting-text meta mdl-color-text--grey-600">
+                  <div class="minilogo"></div>
+                  <div>
+                      <strong>{{ author }}</strong>
+                      <span>{{ article.create_time }} days ago</span>
+                  </div>
                 </div>
             </div>
-            <br/>
         {% endfor %}
+
+        <nav class="demo-nav mdl-cell mdl-cell--12-col">
+            {% if back %}
+            <a href="/?page={{ page|add:"-1" }}" class="demo-nav__button" title="show more">
+              <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple">
+                <i class="material-icons">arrow_back</i>
+              <span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating" style="width: 92.5097px; height: 92.5097px; transform: translate(-50%, -50%) translate(14px, 11px);"></span></span></button>
+              Back
+            </a>
+            {% endif %}
+
+            <div class="section-spacer"></div>
+
+            {% if more %}
+            <a href="/?page={{ page|add:"1" }}" class="demo-nav__button" title="show more">
+              More
+              <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-upgraded=",MaterialButton,MaterialRipple">
+                <i class="material-icons" role="presentation">arrow_forward</i>
+              <span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating" style="width: 92.5097px; height: 92.5097px; transform: translate(-50%, -50%) translate(14px, 11px);"></span></span></button>
+            </a>
+            {% endif %}
+         </nav>
+
+      </main>
+      <div class="mdl-layout__obfuscator"></div>
     </div>
-    <!--
-    <div class="col-lg-3 hidden-md hidden-sm hidden-xs recommonds pull-right">
-        {% for recommond in recommonds %}
-            <div uuid="{{ recommond.uuid }}"class="article-btn recommond">
-                <a href="####">
-                    {{ recommond.title|safe }}
-                </a>
-            </div>
-        {% endfor %}
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+
+    <!-- Overlay for fixed sidebar -->
+    <div class="sidebar-overlay">
     </div>
-    //-->
+
+
+
 {% endblock %}

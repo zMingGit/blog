@@ -1,77 +1,161 @@
-<!doctype html>
-<html>
-    <head>
-        <title>{{title}}</title>
-        <meta charset="utf-8">
+<html lang="en">
+  <head>
     {% load staticfiles %}
-    <link href="{% static "css/blog.css" %}" rel="stylesheet">
-    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
-    </head>
-    <body>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-              <!-- Brand and toggle get grouped for better mobile display -->
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                  <span class="sr-only">Toggle navigation</span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Index</a>
-              </div>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Material Design Lite</title>
 
-              <!-- Collect the nav links, forms, and other content for toggling -->
-              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                  <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Articles <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      {% for article_type in article_types %}
-                        <li><a href="/articles/?limit={{ article_type }}">{{article_type}}</a></li>
-                        <li role="separator" class="divider"></li>
-                      {% endfor %}
-                    </ul>
-                  </li>
-                  <li><a href="#">Picture</a></li>
-                </ul>
-                <form class="navbar-form navbar-left">
-                  <div class="form-group">
-                    <input id="search-text" type="text" class="form-control" placeholder="Search">
-                  </div>
-                  <button id="search" type="submit" class="btn btn-default">Submit</button>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About me <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Profile</a></li>
-                      <li><a href="#">Favorite game</a></li>
-                      <li role="separator" class="divider"></li>
-                      <li><a href="#">motto</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="../images/android-desktop.png">
 
-        {% block context %}
-        {% endblock %}
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="../images/ios-desktop.png">
 
-    <footer class="footer footer-div navbar-fixed-bottom ">
-        <div class="container footer-text">
-            written by zming
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content=" {% static "images/touch/ms-touch-icon-144x144-precomposed.png" %}">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="../images/favicon.png">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+    <link rel="stylesheet" href="{% static "css/font-googleapi.css" %}">
+    <link rel="stylesheet" href="{% static "css/font-googleapi-font.css" %}">
+    <link rel="stylesheet" href="{% static "css/material.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/styles.css" %}">
+    <link rel="stylesheet" href="{% static "css/main.css" %}">
+
+    <script type="text/javascript" src="{% static "lib/jquery-3.3.1.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "lib/popper.min.js" %}"></script>
+
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/bootstrap-theme.min.css" %}">
+    <script type="text/javascript" src="{% static "lib/bootstrap.min.js" %}"></script>
+
+    <script type="text/javascript" src="{% static "lib/main.js" %}"></script>
+    <script type="text/javascript" charset="utf-8" async="" src="{% static "lib/L2Dwidget.0.min.js" %}"></script>
+    <script src="{% static "live2dw/lib/L2Dwidget.min.js" %}"></script>
+  </head>
+  <body>
+    <canvas id="live2dcanvas" width="300" height="600" style="position: fixed; left:0px; opacity: 1; bottom: -20px; z-index: 99999; pointer-events: none;"></canvas>
+    <script>
+      var config = {"model":{"jsonPath":"{% static "live2dw/assets/shizuku.model.json" %}"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}};
+      L2Dwidget.init(config);
+    </script>
+
+
+    <!-- Material sidebar -->
+    <aside id="sidebar" class="sidebar sidebar-inverse" role="navigation">
+        <!-- Sidebar header -->
+        <div class="sidebar-header header-cover" style="background-image: url(https://2.bp.blogspot.com/-2RewSLZUzRg/U-9o6SD4M6I/AAAAAAAADIE/voax99AbRx0/s1600/14%2B-%2B1%2B%281%29.jpg);">
+            <!-- Top bar -->
+            <div class="top-bar"></div>
+            <!-- Sidebar toggle button -->
+            <button type="button" class="sidebar-toggle">
+                <i class="material-icons">menu</i>
+            </button>
+            <!-- Sidebar brand image -->
+            <div class="sidebar-image">
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/53474/atom_profile_01.jpg">
+            </div>
+            <!-- Sidebar brand name -->
+            <a data-toggle="dropdown" class="sidebar-brand dropdown-toggle" href="#settings-dropdown">
+                email@zming.info
+                <b class="caret"></b>
+            </a>
         </div>
-        <div class="container footer-text">
-            And welcome to the machine world
-        </div>
-    </footer>
+    
+        <!-- Sidebar navigation -->
+        <ul class="nav sidebar-nav">
+            <li id="settings-dropdown" class="dropdown">
+                <ul  class="dropdown-menu">
+                    <li>
+                        <a href="#" tabindex="-1">
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" tabindex="-1">
+                            Github
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" tabindex="-1">
+                            Twitter
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="divider"></li>
+            <li class="dropdown">
+                <a class="ripple-effect dropdown-toggle" href="#" data-toggle="dropdown">
+                    Articles
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    {% for info in articlesInfo %}
+                        <li>
+                            <a href="#" tabindex="-1">
+                                {{ info.type }}
+                                <span class="sidebar-badge">{{ info.count }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <!--   <li>
+                <a href="#">
+                    Trash
+                    <span class="sidebar-badge">3</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    Spam
+                    <span class="sidebar-badge">456</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    Follow Up
+                    <span class="sidebar-badge badge-circle">i</span>
+                </a>
+            </li> -->
+        </ul>
+      </aside>
 
-    <script src="{% static "scripts/lib/jquery-3.2.1.js" %}"></script>
-    <script src="{% static "scripts/lib/bootstrap.js" %}"></script>
-    <script src="{% static "scripts/blog-main.js" %}"></script>
-    {% block js_ex %}
-    {% endblock %}
-    </body>
+  <script>
+    Array.prototype.forEach.call(document.querySelectorAll('.mdl-card__media'), function(el) {
+      var link = el.querySelector('a');
+      if(!link) {
+        return;
+      }
+      var target = link.getAttribute('href');
+      if(!target) {
+        return;
+      }
+      el.addEventListener('click', function() {
+        location.href = target;
+      });
+    });
+  </script>
+
+  {% block context %}
+  {% endblock %}
+
+  {% block js_ex %}
+  {% endblock %}
+
+  </body>
 </html>

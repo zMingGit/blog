@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from rest_framework.views import APIView
 
 from .throttling import NoThrottling
@@ -12,11 +12,30 @@ class IndexView(APIView):
     permission_classes = ()
 
     def get(self, request):
-        articles = Article.objects.get_index_articles()
-        article_types = Article.objects.get_all_article_type()
-        return render_to_response("index.html", {
-            'SITE_ROOT': 'qwe',
-            'article_types': article_types,
+        page = request.GET.get('page', None)
+        index = True
+        articles = Article.objects.get_index_articles(0, 5)
+        if not isinstance(page, int) or page is None:
+            pass
+            
+        page = int(page)
+        more = True
+        back = True
+        if page > 1:
+            index = False
+            start = (page - 2 ) * 5 +4
+            end = (page - 1) * 5 + 4
+            articles = Article.objects.get_index_articles(start, end+1)
+            if len(articles) != 6:
+                more = False
+        else:
+            back = False
+        
+
+        return render(request, "index.html", {
             'articles': articles,
-            'title': 'Z-M'
+            'page': page,
+            'index': index,
+            'back': back,
+            'more': more
         })

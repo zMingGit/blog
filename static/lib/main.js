@@ -11,11 +11,47 @@
 // Sidebar toggle
 //
 // -------------------
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function csrfSafeMethod(method) {  
+    // these HTTP methods do not require CSRF protection  
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));  
+}  
+function sameOrigin(url) {  
+    // test that a given url is a same-origin URL  
+    // url could be relative or scheme relative or absolute  
+    var host = document.location.host; // host + port  
+    var protocol = document.location.protocol;  
+    var sr_origin = '//' + host;  
+    var origin = protocol + sr_origin;  
+    // Allow absolute or scheme relative URLs to same origin  
+    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||  
+        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||  
+        // or any other URL that isn't scheme relative or absolute i.e relative.  
+        !(/^(\/\/|http:|https:).*/.test(url));  
+}  
+
 $(document).ready(function() {
     var $overlay = $('.sidebar-overlay');
     var $infobtn = $('.info_button');
     var $articleCard = $('.articleCard');
-    var $authorCard = $('.authorCard')
+    var $authorCard = $('.authorCard');
+    var $addcommentBtn = $('.add-comment-btn');
 
     $('.sidebar-toggle').on('click', function() {
         var sidebar = $('#sidebar');
@@ -53,7 +89,39 @@ $(document).ready(function() {
             window.location.href = '/profile';
             return false;
         });
-    })
+    });
+
+    $addcommentBtn.click(function() {
+        csrftoken = getCookie('csrftoken');  
+        $.ajaxSetup({  
+            beforeSend: function(xhr, settings) {  
+                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {  
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);  
+                }  
+            }  
+        });  
+        var article = $('#comment').attr('uuid')
+        var comment = $('#comment').val()
+        var $cmts = $('.comment')
+        var url = '/api/comment';
+        $.ajax({
+            url: '/api/comment/',
+            type: 'PUT',
+            dataType: 'json',
+            data: {
+                'comment': comment,
+                'article': article
+            },
+            cache: false,
+            success: function(data) {
+            $cmts.append('<header class="comment__header"><img src="/static/images/co1.jpg" %}" class="comment__avatar"><div class="comment__author"><strong>someone</strong><span>just now</span></div></header><div class="comment__text">'+ comment +'</div>');
+            },
+            error: function(xhr) {
+                alert("Network error");
+            }
+        });
+        return false
+    });
 
 });
 
@@ -156,3 +224,4 @@ $(document).ready(function() {
 	}
 
 })(jQuery.fn.removeClass);
+

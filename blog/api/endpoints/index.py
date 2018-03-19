@@ -18,18 +18,19 @@ class IndexView(APIView):
             pass
             
         page = int(page)
-        more = True
-        back = True
+        more = False
+        back = False
         if page > 1:
             index = False
             start = (page - 2 ) * 5 +4
             end = (page - 1) * 5 + 4
             articles = Article.objects.get_index_articles(start, end+1)
-            if len(articles) != 6:
-                more = False
+            back = True
         else:
             articles = Article.objects.get_index_articles(0, 5)
-            back = False
+
+        if len(articles) == 6:
+            more = True
         
 
         return render(request, "index.html", {

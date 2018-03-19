@@ -10,6 +10,7 @@ class MethodAuthentication():
         if request.method == "GET":
             return None
         else:
+            return None
             user = getattr(request._request, 'user', None)
             if not user or not user.is_active:
                 raise exceptions.AuthenticationFailed('User inactive or deleted.')

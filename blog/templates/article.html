@@ -22,43 +22,25 @@
             <div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments">
               <form>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <textarea rows=1 class="mdl-textfield__input" id="comment"></textarea>
+                  <textarea rows=1 class="mdl-textfield__input" uuid="{{uuid}}" id="comment"></textarea>
                   <label for="comment" class="mdl-textfield__label">Join the discussion</label>
                 </div>
-                <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+                <button class="add-comment-btn mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                   <i class="material-icons" role="presentation">check</i><span class="visuallyhidden">add comment</span>
                 </button>
               </form>
               <div class="comment mdl-color-text--grey-700">
-                <header class="comment__header">
                 {% for comment in comments %}
-                    <img src="{% static "images/co1.jpg" %}" class="comment__avatar">
+                <header class="comment__header">
+                     <img src="{% static "images/co1.jpg" %}" class="comment__avatar">
                       <div class="comment__author">
                         <strong>{{ comment.name }}</strong>
                         <span>{{comment.time}} days ago</span>
                       </div>
-                    </header>
+                </header>
                     <div class="comment__text">
                         {{comment.context}}
                     </div>
-                    <nav class="comment__actions">
-                      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                        <i class="material-icons" role="presentation">thumb_up</i><span class="visuallyhidden">like comment</span>
-                        <span class="sidebar-badge">{{ info.count }}</span>
-                      </button>
-                      <span class="sidebar-badge">{{comment.agreed}}</span>
-                      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                        <i class="material-icons" role="presentation">thumb_down</i><span class="visuallyhidden">dislike comment</span>
-                      </button>
-                      <span class="sidebar-badge">{{comment.against}}</span>
-
-                      <!-- TODO: share statistics
-                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                        <i class="material-icons" role="presentation">share</i><span class="visuallyhidden">share comment</span>
-                        <span class="sidebar-badge">1</span>
-                      </button>-->
-
-                    </nav>
                 {% endfor %}
                 <!-- TODO:嵌套评论 
                 <div class="comment__answers">

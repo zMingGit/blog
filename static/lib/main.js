@@ -52,6 +52,7 @@ $(document).ready(function() {
     var $articleCard = $('.articleCard');
     var $authorCard = $('.authorCard');
     var $addcommentBtn = $('.add-comment-btn');
+    var $indexImg = $('.sidebar-image');
 
     $('.sidebar-toggle').on('click', function() {
         var sidebar = $('#sidebar');
@@ -121,6 +122,10 @@ $(document).ready(function() {
             }
         });
         return false
+    });
+
+    $indexImg.on('click', function() {
+        window.location.href = '/';
     });
 
 });

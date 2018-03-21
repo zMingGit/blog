@@ -1,6 +1,4 @@
-from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from rest_framework.views import APIView
 
 from .throttling import NoThrottling
@@ -9,20 +7,35 @@ from blog.article.models import Article
 
 
 class ArticlesView(APIView):
-    throttle_classes = (NoThrottling, )
+    throttling_classes = (NoThrottling, )
     authentication_classes = (MethodAuthentication, )
     permission_classes = ()
 
-    def get(self, request):
-        limit = request.GET.get('limit', '').lower()
-        if not limit:
-            return HttpResponseRedirect(reverse("index"))
+    def get(self, request, atype):
+        page = request.GET.get('page', 1)
+        index = False
+        if not isinstance(page, int) or page is None:
+            pass
+            
+        page = int(page)
+        more = False
+        back = False
+        if page > 1:
+            start = (page - 2 ) * 5 +4
+            end = (page - 1) * 5 + 4
+            articles = Article.objects.get_articles_by_atype(atype, start, end+1)
+            back = True
+        else:
+            articles = Article.objects.get_articles_by_atype(atype, 0, 5)
 
-        article_types = Article.objects.get_all_article_type()
-        articles = Article.objects.get_articles_by_type(limit)
-        return render_to_response("index.html", {
-            'SITE_ROOT': 'qwe',
-            'article_types': article_types,
+        if len(articles) == 6:
+            more = True
+        
+
+        return render(request, "index.html", {
             'articles': articles,
-            'title': 'Z-M | ' + limit
+            'page': page,
+            'index': index,
+            'back': back,
+            'more': more
         })

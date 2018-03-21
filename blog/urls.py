@@ -23,7 +23,7 @@ from blog.api.endpoints.search import SearchView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('^$',  IndexView.as_view(), name='index'),
-    url('^articles/', ArticlesView.as_view(), name='articles'),
-    url('^search/', SearchView.as_view(), name='search'),
+    url('^articles/(?P<atype>[-0-9a-z]{36})/$', ArticlesView.as_view(), name='articles'),
+    url('^search/$', SearchView.as_view(), name='search'),
     url(r'^api/', include('blog.api.urls')),
 ]

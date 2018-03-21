@@ -81,18 +81,23 @@
             <li id="settings-dropdown" class="dropdown">
                 <ul  class="dropdown-menu">
                     <li>
-                        <a href="#" tabindex="-1">
+                        <a href="/api/profile" tabindex="-1">
                             Profile
                         </a>
                     </li>
                     <li>
-                        <a href="#" tabindex="-1">
+                        <a href="https://github.com/zMingGit" tabindex="-1">
                             Github
                         </a>
                     </li>
                     <li>
-                        <a href="#" tabindex="-1">
+                        <a href="https://twitter.com/lieofman" tabindex="-1">
                             Twitter
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:email@zming.info" target="_blank" rel="noopener noreferrer" tabindex="-1">
+                            MailTo
                         </a>
                     </li>
                 </ul>
@@ -106,7 +111,7 @@
                 <ul class="dropdown-menu">
                     {% for info in articlesInfo %}
                         <li>
-                            <a href="#" tabindex="-1">
+                            <a href="/articles/{{ info.uuid }}" tabindex="-1">
                                 {{ info.type }}
                                 <span class="sidebar-badge">{{ info.count }}</span>
                             </a>

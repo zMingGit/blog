@@ -53,6 +53,7 @@ $(document).ready(function() {
     var $authorCard = $('.authorCard');
     var $addcommentBtn = $('.add-comment-btn');
     var $indexImg = $('.sidebar-image');
+    var $searchBtn = $('.search_btn');
 
     $('.sidebar-toggle').on('click', function() {
         var sidebar = $('#sidebar');
@@ -87,7 +88,7 @@ $(document).ready(function() {
 
     $authorCard.each(function() {
         $(this).on('click', function() {
-            window.location.href = '/profile';
+            window.location.href = '/api/profile';
             return false;
         });
     });
@@ -126,6 +127,21 @@ $(document).ready(function() {
 
     $indexImg.on('click', function() {
         window.location.href = '/';
+    });
+
+    $searchBtn.on('click', function() {
+        $('.search_target').addClass('is-focused');
+        $('#search_input').addClass('activate').removeClass('deactivate').focus();
+        return false;
+    });
+
+    $('.demo-blog').on('click', function() {
+        $('.search_target').removeClass('is-focused').addClass('deactivate').removeClass('activate');
+        $('#search_input').removeClass('activate').addClass('deactivate');
+        $('.search_target').on('click', function(){
+            $('#search_input').focus();
+            return false;
+        });
     });
 
 });

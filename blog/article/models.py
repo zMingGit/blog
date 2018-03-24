@@ -2,6 +2,7 @@ import uuid
 import datetime
 import markdown
 import django.utils.timezone as timezone
+from collections import Iterable
 
 from django.db import models
 from django.db.models import Count
@@ -13,21 +14,7 @@ class ArticleManager(models.Manager):
         try:
             input_uuid = uuid.UUID('{' + input_uuid + '}')
             article = super(ArticleManager, self).get(uuid=input_uuid)
-            article.title = markdown.markdown(article.title,
-                                              output_format='html',
-                                              extensions=['nl2br',
-                                                          'del_ins'],
-                                              tags=ALLOWED_TAGS,
-                                              strip=True)
-            article.context = markdown.markdown(article.context,
-                                                output_format='html',
-                                                extensions=['nl2br',
-                                                            'del_ins'],
-                                                tags=ALLOWED_TAGS,
-                                                strip=True)
-            article.context = article.context.replace('<code>', '<pre>')
-            article.context = article.context.replace('</code>', '</pre>')
-            return article
+            return self.trans_articles(article)[0]
         except self.model.DoesNotExist:
             return None
 
@@ -36,25 +23,21 @@ class ArticleManager(models.Manager):
             article = super(ArticleManager, self).get(title=title)
             if len(article) > 1:
                 article = article[0]
-            article.title = markdown.markdown(article.title,
-                                              output_format='html',
-                                              extensions=['nl2br',
-                                                            'del_ins'],
-                                              tags=ALLOWED_TAGS,
-                                              strip=True)
-            article.context = markdown.markdown(article.context,
-                                                output_format='html',
-                                                extensions=['nl2br',
-                                                            'del_ins'],
-                                                tags=ALLOWED_TAGS, strip=True)
-            article.context = article.context.replace('<code>', '<pre>')
-            article.context = article.context.replace('</code>', '</pre>')
-            return article
+            return self.trans_articles(article)[0]
         except self.model.DoesNotExist:
             return None
 
     def get_index_articles(self, start, end):
         articles = super(ArticleManager, self).order_by('-create_time')[start: end]
+        return self.trans_articles(articles)
+
+    def get_articles_by_search(self, key_word, start, end):
+        articles = super(ArticleManager, self).filter(context__contains=key_word).order_by('-create_time')[start: end]
+        return self.trans_articles(articles)
+      
+    def trans_articles(self, articles):
+        if not isinstance(articles, Iterable):
+            articles = [articles]
         for article in articles:
             article.title = markdown.markdown(article.title,
                                               output_format='html',
@@ -71,50 +54,15 @@ class ArticleManager(models.Manager):
             article.context = article.context.replace('</code>', '</pre>')
             article.create_time = (datetime.datetime.now().replace(tzinfo=None) - article.create_time.replace(tzinfo=None)).days
         return articles
+     
 
     def get_articles_by_atype(self, atype, start, end):
         articles = super(ArticleManager, self).filter(article_type=atype).order_by('-create_time')[start: end]
-        for article in articles:
-            article.title = markdown.markdown(article.title,
-                                              output_format='html',
-                                              extensions=['nl2br',
-                                                          'del_ins'],
-                                              tags=ALLOWED_TAGS,
-                                              strip=True)
-            article.context = markdown.markdown(article.context,
-                                                output_format='html',
-                                                extensions=['nl2br',
-                                                            'del_ins'],
-                                                tags=ALLOWED_TAGS, strip=True)
-            article.context = article.context.replace('<code>', '<pre>')
-            article.context = article.context.replace('</code>', '</pre>')
-            article.create_time = (datetime.datetime.now().replace(tzinfo=None) - article.create_time.replace(tzinfo=None)).days
-        return articles
-
-    def get_all_article_type(self):
-        return super(ArticleManager, self).values_list('article_type',
-                                                       flat=True).distinct()
+        return self.trans_articles(articles)
 
     def get_all_article_type_and_count(self):
         return super(ArticleManager, self).values_list('article_type__atype', 'article_type__uuid', ).annotate(Count('uuid'))
 
-    def get_articles_by_type(self, article_type):
-        articles = super(ArticleManager, self).filter(article_type=article_type).order_by('-create_time')[:6]
-        for article in articles:
-            article.title = markdown.markdown(article.title,
-                                              output_format='html',
-                                              extensions=['nl2br',
-                                                          'del_ins'],
-                                              tags=ALLOWED_TAGS,
-                                              strip=True)
-            article.context = markdown.markdown(article.context,
-                                                output_format='html',
-                                                extensions=['nl2br',
-                                                            'del_ins'],
-                                                tags=ALLOWED_TAGS, strip=True)
-            article.context = article.context.replace('<code>', '<pre>')
-            article.context = article.context.replace('</code>', '</pre>')
-        return articles
 
 class ArticleType(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)

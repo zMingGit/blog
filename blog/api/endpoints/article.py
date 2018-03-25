@@ -50,7 +50,8 @@ class ArticleView(APIView):
             'title': data.title,
             'context': data.context,
             'comments': comments,
-            'uuid': uuid
+            'uuid': uuid,
+            'ctime': data.create_time
         })
 
     def post(self, request):

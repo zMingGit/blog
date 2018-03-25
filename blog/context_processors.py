@@ -8,7 +8,8 @@ def base(request):
     for t in types:
         datas.append({'type': t[0], 'uuid': t[1], 'count': t[2]})
     result = {
-        'author': 'ZiMing',
-        'articlesInfo': datas
+        'author': 'ZMing',
+        'articlesInfo': datas,
+        'blog_name': 'ZM Blog'
     }
     return result

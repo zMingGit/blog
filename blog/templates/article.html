@@ -13,8 +13,8 @@
         <div class="demo-blog__posts mdl-grid">
           <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
               <div class="mdl-card__media mdl-color-text--grey-50" style="background-image: url('{% static "images/road_big.jpg" %}');">
-            <h1>{{title|safe}}</h1>
-                <span>2 days ago</span>
+            <h1 style="margin-bottom:40px;">{{title|safe}}</h1>
+              <span style="position:absolute;">{{ctime}} days ago</span>
             </div>
             <div class="article_context">
                 {{ context|safe }}

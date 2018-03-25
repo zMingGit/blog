@@ -24,7 +24,7 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '2aypy8rmd4y&m6kp$n%t+s4msru4tm332%wy_$9s=gk7xuz_(n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -129,6 +129,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = '/root/blog_static'
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),

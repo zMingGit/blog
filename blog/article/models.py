@@ -67,6 +67,9 @@ class ArticleType(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     atype = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.atype.encode('utf-8')
+
 class Article(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=100, db_index=True)

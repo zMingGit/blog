@@ -2,5 +2,8 @@ from django.contrib import admin
 from blog.article.models import Article, ArticleType
 
 
-admin.site.register(Article)
-admin.site.register(ArticleType)
+class ArticleAdmin(admin.ModelAdmin):
+    model = Article
+    list_display = ['uuid', 'title', 'intro', 'context', 'article_type', 'create_time', 'image']
+
+admin.site.register(Article, ArticleAdmin)

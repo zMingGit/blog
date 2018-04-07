@@ -1,6 +1,7 @@
 import uuid
 import datetime
-import markdown
+from markdown import markdown
+from markdown_newtab import NewTabExtension
 import django.utils.timezone as timezone
 from collections import Iterable
 
@@ -39,19 +40,17 @@ class ArticleManager(models.Manager):
         if not isinstance(articles, Iterable):
             articles = [articles]
         for article in articles:
-            article.title = markdown.markdown(article.title,
+            article.title = markdown(article.title,
                                               output_format='html',
                                               extensions=['nl2br',
                                                           'del_ins'],
                                               tags=ALLOWED_TAGS,
                                               strip=True)
-            article.context = markdown.markdown(article.context,
-                                                output_format='html',
-                                                extensions=['nl2br',
-                                                            'del_ins'],
-                                                tags=ALLOWED_TAGS, strip=True)
-            article.context = article.context.replace('<code>', '<pre>')
-            article.context = article.context.replace('</code>', '</pre>')
+            article.context = markdown(article.context,
+                                       extensions=['pymdownx.superfences', 'pymdownx.betterem',
+                                       NewTabExtension(), 'downheader(levels=2)',
+                                       'pymdownx.tilde', 'pymdownx.inlinehilite',
+                                       'pymdownx.details'])
             article.create_time = (datetime.datetime.now().replace(tzinfo=None) - article.create_time.replace(tzinfo=None)).days
         return articles
      

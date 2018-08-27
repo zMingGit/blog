@@ -23,10 +23,10 @@ class ArticleView(APIView):
             return Response('comment page invalid.', status.HTTP_400_BAD_REQUEST)
         if cmt_page < 1:
             cmt_page = 1
-        if op is None or op not in ['uuid', 'title']:
+        if op not in ['uuid', 'title', None]:
             return Response('invalid type', status.HTTP_400_BAD_REQUEST)
 
-        if op == 'uuid':
+        if op == 'uuid' or op is None:
             uuid = request.GET.get('uuid', None)
             if uuid is None:
                 return Response('uuid can not be empty',
@@ -38,12 +38,12 @@ class ArticleView(APIView):
                 return Response('title can not be empty',
                                 status.HTTP_400_BAD_REQUEST)
             data = Article.objects.get_article_by_title(title)
+
         if data is None:
             return Response("can't found this article")
         re_html = re.compile('<.*?>')
         data.title = re_html.sub('', data.title)
         uuid = data.uuid
-        
 
         comments = Comment.objects.get_comment_by_page(data.uuid, cmt_page)
         return render(request, 'article.html', {

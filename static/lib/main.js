@@ -28,6 +28,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
+
 function csrfSafeMethod(method) {  
     // these HTTP methods do not require CSRF protection  
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));  
@@ -81,7 +82,7 @@ $(document).ready(function() {
     $articleCard.each(function() {
         $(this).on('click', function() {
             var uuid = $(this).attr('uuid');
-            window.location.href = '/api/article?type=uuid&uuid=' + uuid;
+            window.location.href = '/api/article?uuid=' + uuid;
             return false;
         });
     });
@@ -93,8 +94,10 @@ $(document).ready(function() {
         });
     });
 
+
     $addcommentBtn.click(function() {
-        csrftoken = getCookie('csrftoken');  
+        this.disabled = true;
+        csrftoken = getCookie('csrftoken');
         $.ajaxSetup({  
             beforeSend: function(xhr, settings) {  
                 if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {  
@@ -106,6 +109,11 @@ $(document).ready(function() {
         var comment = $('#comment').val()
         var $cmts = $('.comment')
         var url = '/api/comment';
+        if (!comment || !article) {
+            alert("comment can not be empty.");
+            this.disabled=false;
+            return false;
+        };
         $.ajax({
             url: '/api/comment/',
             type: 'PUT',
@@ -116,13 +124,15 @@ $(document).ready(function() {
             },
             cache: false,
             success: function(data) {
-            $cmts.append('<header class="comment__header"><img src="/static/images/co1.jpg" %}" class="comment__avatar"><div class="comment__author"><strong>someone</strong><span>just now</span></div></header><div class="comment__text">'+ comment +'</div>');
+                $cmts.append('<header class="comment__header"><img src="/static/images/co1.jpg" %}" class="comment__avatar"><div class="comment__author"><strong>someone</strong><span>just now</span></div></header><div class="comment__text">'+ comment +'</div>');
             },
             error: function(xhr) {
                 alert("Network error");
             }
         });
-        return false
+        $('#comment').val("");
+        this.disabled=false;
+        return false;
     });
 
     $indexImg.on('click', function() {

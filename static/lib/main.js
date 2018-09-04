@@ -55,6 +55,7 @@ $(document).ready(function() {
     var $addcommentBtn = $('.add-comment-btn');
     var $indexImg = $('.sidebar-image');
     var $searchBtn = $('.search_btn');
+    var $rssBtn = $('.rss_btn')
 
     $('.sidebar-toggle').on('click', function() {
         var sidebar = $('#sidebar');
@@ -143,6 +144,10 @@ $(document).ready(function() {
         $('.search_target').addClass('is-focused');
         $('#search_input').addClass('activate').removeClass('deactivate').focus();
         return false;
+    });
+
+    $rssBtn.on('click', function() {
+        window.location.href = '/latest/feed/';
     });
 
     $('.demo-blog').on('click', function() {

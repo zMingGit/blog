@@ -1,4 +1,4 @@
-Django == 1.11.4
+Django == 1.11.20
 djangorestframework == 3.6.3
 Markdown == 2.6.9
 mdx-del-ins == 1.0

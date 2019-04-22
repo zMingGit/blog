@@ -36,31 +36,47 @@ mkdir -p /etc/nginx/blog
 
 cat > /etc/nginx/blog/blog.conf << 'EOF'
 upstream django {
-
     # server unix:///path/to/your/mysite/mysite.sock; # for a file socket
     server 127.0.0.1:8000; # for a web port socket (we'll use this first)
 }
 
+server {
+    listen 80;
+    server_name www.zming.info zming.info;
+    #rewrite ^/(.*)$ http://www.zming.info/$1 permanent;
+    return 301 https://www.zming.info;
+}
+
 # configuration of the server
 server {
+    listen 443 default_server ssl; # managed by Certbot
+    ssl_certificate /etc/xxx/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/xxx/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    if ($host = 'zming.info') {
+        #rewrite ^/(.*)$ https://www.zming.info/$1 parmanent;
+        return 301 https://www.zming.info;
+    }
+
     # the port your site will be served on
-    listen      80 default_server;
     # the domain name it will serve for
     server_name www.zming.info; # substitute your machine's IP address or FQDN
     charset     utf-8;
-    
+
     # max upload size
     client_max_body_size 75M;   # adjust to taste
-    
+
     # Django media
     location /media  {
         alias /root/blog_media;  # your Django project's media files - amend as required
     }
-    
+
     location /static {
         alias /root/blog_static; # your Django project's static files - amend as required
     }
-    
+
     # Finally, send all non-media requests to the Django server.
     location / {
         uwsgi_pass  django;

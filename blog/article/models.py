@@ -35,7 +35,7 @@ class ArticleManager(models.Manager):
     def get_articles_by_search(self, key_word, start, end):
         articles = super(ArticleManager, self).filter(context__contains=key_word).order_by('-create_time')[start: end]
         return self.trans_articles(articles)
-      
+
     def trans_articles(self, articles):
         if not isinstance(articles, Iterable):
             articles = [articles]
@@ -50,10 +50,10 @@ class ArticleManager(models.Manager):
                                        extensions=['pymdownx.superfences', 'pymdownx.betterem',
                                        NewTabExtension(), 'downheader(levels=2)',
                                        'pymdownx.tilde', 'pymdownx.inlinehilite',
-                                       'pymdownx.details'])
+                                       'pymdownx.details', 'markdown.extensions.footnotes'])
             article.create_time = (datetime.datetime.now().replace(tzinfo=None) - article.create_time.replace(tzinfo=None)).days
         return articles
-     
+
 
     def get_articles_by_atype(self, atype, start, end):
         articles = super(ArticleManager, self).filter(article_type=atype).order_by('-create_time')[start: end]

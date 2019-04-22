@@ -11,9 +11,9 @@
           </a>
         </div>
         <div class="demo-blog__posts mdl-grid">
-          <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-              <div class="mdl-card__media mdl-color-text--grey-50" style="background-image: url('{% static "images/road_big.jpg" %}');">
-            <h1 style="margin-bottom:40px;">{{title|safe}}</h1>
+          <div class="mdl-card mdl-shadow--3dp mdl-cell mdl-cell--12-col">
+            <div class="mdl-card__media mdl-color-text--grey-50" style="background-image: url('{% static "images/road_big.jpg" %}');">
+              <h1 style="margin-bottom:40px;">{{title|safe}}</h1>
               <span style="position:absolute;">{{ctime}} days ago</span>
             </div>
             <div class="article_context">
@@ -95,3 +95,4 @@
     </div>
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 {% endblock %}
+

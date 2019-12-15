@@ -17,6 +17,19 @@
     color:  #00e5ff;
 }
 
+.links {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 240px;
+    width: 60%;
+    color:  #ffb74d;
+    font-size: 30px;
+}
+
 .bg {
     background: rgba(233, 235, 236, 1);
     text-shadow: none;

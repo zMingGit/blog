@@ -20,12 +20,14 @@ from blog.api.endpoints.index import IndexView
 from blog.api.endpoints.articles import ArticlesView
 from blog.api.endpoints.feed import LatestEntriesFeed
 from blog.api.endpoints.profile import ProfileView
+from blog.api.endpoints.links import LinksView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('^$', IndexView.as_view(), name='index'),
     url('^articles/(?P<atype>[-0-9a-z]{36})/$', ArticlesView.as_view(), name='articles'),
     url('^latest/feed/$', LatestEntriesFeed(), name='articles'),
+    url('links/$', LinksView.as_view(), name='links'),
     url(r'profile/$', ProfileView.as_view(), name='api-profile'),
     url(r'^api/', include('blog.api.urls')),
 ]

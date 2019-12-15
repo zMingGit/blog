@@ -1,0 +1,25 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% load article_filter %}
+{% block context %}
+
+    <div class="blog blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">
+      <main class="mdl-layout__content">
+        <div class="demo-back">
+          <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="/" title="go back" role="button">
+            <i class="material-icons" role="presentation">arrow_back</i>
+          </a>
+        </div>
+        <div class="links">
+          {% for link in links %}
+            <div class="link">
+                <a href={{link.url}}> {{link.name}} </a>
+            </div>
+          {% endfor %}
+        </div>
+      </main>
+    </div>
+
+
+{% endblock %}

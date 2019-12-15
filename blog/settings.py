@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'blog.comment',
     'blog.tag',
     'blog.certificate',
+    'blog.link'
 ]
 
 MIDDLEWARE = [

@@ -1,9 +1,7 @@
 import uuid
-import datetime
 from markdown import markdown
 import django.utils.timezone as timezone
 from collections import Iterable
-from pymdownx.highlight import HighlightExtension
 
 from django.db import models
 from django.db.models import Count

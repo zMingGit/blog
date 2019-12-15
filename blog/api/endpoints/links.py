@@ -3,13 +3,17 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 
 from .throttling import NoThrottling
+from blog.link.models import Link
 from .authentication import MethodAuthentication
 
 
-class ProfileView(APIView):
+class LinksView(APIView):
     throttle_classes = (NoThrottling, )
     authentication_classes = (MethodAuthentication, )
     permission_classes = ()
 
     def get(self, request):
-        return render(request, 'profile.html')
+        links = Link.objects.get_all()
+        return render(request, 'links.html', {
+            'links': links
+        })

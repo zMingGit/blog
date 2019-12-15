@@ -56,6 +56,7 @@ $(document).ready(function() {
     var $indexImg = $('.sidebar-image');
     var $searchBtn = $('.search_btn');
     var $rssBtn = $('.rss_btn')
+    var $linksBtn = $('.links_btn')
     var $commenContext = $('.comment__text')
 
     $('.sidebar-toggle').on('click', function() {
@@ -175,6 +176,10 @@ $(document).ready(function() {
 
     $rssBtn.on('click', function() {
         window.location.href = '/latest/feed/';
+    });
+
+    $linksBtn.on('click', function() {
+        window.location.href = '/links/';
     });
 
     $('.demo-blog').on('click', function() {

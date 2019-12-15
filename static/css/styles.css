@@ -27,7 +27,7 @@ body::before {
 }
 body .blog {
   font-family: 'Roboto', 'Helvetica', sans-serif;
-  background-image: url('../images/bg.jpg');
+  background-image: url('https://raw.githubusercontent.com/zMingGit/images/master/blog/bg.jpg');
 }
 
 .blog .blog__posts {
@@ -173,7 +173,7 @@ body .blog {
           order: -1;
 }
 .blog .coffee-pic .mdl-card__media {
-  background-image: url('../images/spg.jpg');
+  background-image: url('https://raw.githubusercontent.com/zMingGit/images/master/blog/spg.jpg');
 }
 .blog .something-else .mdl-card__media {
   display: -webkit-flex;
@@ -435,7 +435,7 @@ body .blog {
 .blog .minilogo {
   width: 44px;
   height: 44px;
-  background-image: url('../images/avatar.png');
+  background-image: url('https://raw.githubusercontent.com/zMingGit/images/master/blog/avatar.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 50%;
@@ -463,13 +463,13 @@ body .blog {
   border-radius: 2px;
 }
 .social-btn__twitter {
-  background-image: url('https://www.gstatic.com/../images/icons/material/system/2x/post_twitter_black_24dp.png');
+  background-image: url('https://raw.githubusercontent.com/zMingGit/images/master/blog/twitter.png');
 }
 .social-btn__blogger {
-  background-image: url('https://www.gstatic.com/../images/icons/material/system/2x/post_facebook_black_24dp.png');
+  background-image: url('https://raw.githubusercontent.com/zMingGit/images/master/blog/fackbook.png');
 }
 .social-btn__gplus {
-  background-image: url('https://www.gstatic.com/../images/icons/material/system/2x/post_gplus_black_24dp.png');
+  background-image: url('https://raw.githubusercontent.com/zMingGit/images/master/blog/gplush.png');
 }
 .social-btn__share {
   color: rgba(0, 0, 0, 0.54);

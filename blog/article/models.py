@@ -1,9 +1,9 @@
 import uuid
 import datetime
 from markdown import markdown
-from markdown_newtab import NewTabExtension
 import django.utils.timezone as timezone
 from collections import Iterable
+from pymdownx.highlight import HighlightExtension
 
 from django.db import models
 from django.db.models import Count
@@ -41,19 +41,17 @@ class ArticleManager(models.Manager):
             articles = [articles]
         for article in articles:
             article.title = markdown(article.title,
-                                              output_format='html',
-                                              extensions=['nl2br',
-                                                          'del_ins'],
-                                              tags=ALLOWED_TAGS,
-                                              strip=True)
+                                     output_format='html',
+                                     extensions=['nl2br'],
+                                     tags=ALLOWED_TAGS,
+                                     strip=True)
             article.context = markdown(article.context,
-                                       extensions=['pymdownx.superfences', 'pymdownx.betterem',
-                                       NewTabExtension(), 'downheader(levels=2)',
-                                       'pymdownx.tilde', 'pymdownx.inlinehilite',
-                                       'pymdownx.details', 'markdown.extensions.footnotes'])
-            article.create_time = (datetime.datetime.now().replace(tzinfo=None) - article.create_time.replace(tzinfo=None)).days
+                                       extensions=['markdown.extensions.extra', 'markdown.extensions.codehilite',
+                                                   'markdown.extensions.sane_lists', 'pymdownx.tilde', 'pymdownx.arithmatex',
+                                                   'pymdownx.keys']
+                                       )
+            article.create_time = article.create_time.replace(tzinfo=None).strftime('%Y-%m-%d %H:%M:%S')
         return articles
-
 
     def get_articles_by_atype(self, atype, start, end):
         articles = super(ArticleManager, self).filter(article_type=atype).order_by('-create_time')[start: end]
@@ -68,15 +66,15 @@ class ArticleType(models.Model):
     atype = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.atype.encode('utf-8')
+        return self.atype
+
 
 class Article(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=100, db_index=True)
     intro = models.TextField()
     context = models.TextField()
-    article_type = models.ForeignKey(ArticleType)
+    article_type = models.ForeignKey(ArticleType, on_delete=models.CASCADE)
     create_time = models.DateTimeField(default=timezone.now)
     image = models.CharField(max_length=90)
     objects = ArticleManager()
-

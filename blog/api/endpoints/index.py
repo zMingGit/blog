@@ -12,6 +12,7 @@ def safe_trans_to_int(x):
     except:
         return x
 
+
 class IndexView(APIView):
     throttling_classes = (NoThrottling, )
     authentication_classes = (MethodAuthentication, )
@@ -27,13 +28,13 @@ class IndexView(APIView):
             return render(request, "index.html", {
                 'spec_msg': spec_msg
             })
-            
+
         page = int(page)
         more = False
         back = False
         if page > 1:
             index = False
-            start, end = (page - 2 ) * 5 +4, (page - 1) * 5 + 4
+            start, end = (page - 2) * 5 +4, (page - 1) * 5 + 4
             back = True
             count = 6
         else:
@@ -41,21 +42,20 @@ class IndexView(APIView):
             start, end = 0, 4
 
         if search_text:
-            articles = Article.objects.get_articles_by_search(search_text, start, end+1)
+            articles = Article.objects.get_articles_by_search(search_text, start, end + 1)
             index = False
             reduce_one = False
             if len(articles) == 0:
                 spec_msg = "There is no matching result."
         else:
-            articles = Article.objects.get_index_articles(start, end+1)
+            articles = Article.objects.get_index_articles(start, end + 1)
             reduce_one = True
-       
+
         if len(articles) == count:
             more = True
 
         if reduce_one and len(articles) == count:
             articles = articles[:-1]
-
 
         return render(request, "index.html", {
             'articles': articles,

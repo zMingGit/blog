@@ -14,7 +14,7 @@
     margin: auto;
     height: 240px;
     width: 60%;
-    color: yellow;
+    color:  #00e5ff;
 }
 
 .bg {
@@ -43,6 +43,10 @@
     padding-top: 165px;
 }
 
+.search_target {
+  color: #d1c4e9;
+}
+
 .search_btn {
     position: absolute;
     top: 0px;
@@ -66,9 +70,12 @@
     right: 0px;
 }
 
-.search_module {
+.out_module {
     position: absolute;
     top: -50px;
+}
+
+.out_module {
 }
 
 .deactivate{

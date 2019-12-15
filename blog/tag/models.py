@@ -8,5 +8,5 @@ class Tag(models.Model):
 
 
 class ArticleTagMap(models.Model):
-    article = models.ForeignKey(Article)
-    tag = models.ForeignKey(Tag, db_index=True)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, db_index=True, on_delete=models.CASCADE)

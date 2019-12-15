@@ -29,23 +29,23 @@ function getCookie(name) {
 }
 
 
-function csrfSafeMethod(method) {  
-    // these HTTP methods do not require CSRF protection  
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));  
-}  
-function sameOrigin(url) {  
-    // test that a given url is a same-origin URL  
-    // url could be relative or scheme relative or absolute  
-    var host = document.location.host; // host + port  
-    var protocol = document.location.protocol;  
-    var sr_origin = '//' + host;  
-    var origin = protocol + sr_origin;  
-    // Allow absolute or scheme relative URLs to same origin  
-    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||  
-        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||  
-        // or any other URL that isn't scheme relative or absolute i.e relative.  
-        !(/^(\/\/|http:|https:).*/.test(url));  
-}  
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+function sameOrigin(url) {
+    // test that a given url is a same-origin URL
+    // url could be relative or scheme relative or absolute
+    var host = document.location.host; // host + port
+    var protocol = document.location.protocol;
+    var sr_origin = '//' + host;
+    var origin = protocol + sr_origin;
+    // Allow absolute or scheme relative URLs to same origin
+    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+        // or any other URL that isn't scheme relative or absolute i.e relative.
+        !(/^(\/\/|http:|https:).*/.test(url));
+}
 
 $(document).ready(function() {
     var $overlay = $('.sidebar-overlay');
@@ -56,6 +56,7 @@ $(document).ready(function() {
     var $indexImg = $('.sidebar-image');
     var $searchBtn = $('.search_btn');
     var $rssBtn = $('.rss_btn')
+    var $commenContext = $('.comment__text')
 
     $('.sidebar-toggle').on('click', function() {
         var sidebar = $('#sidebar');
@@ -95,43 +96,69 @@ $(document).ready(function() {
         });
     });
 
+  $commenContext.each(function() {
+    var colors = ['#ab47bc', '#b388ff', '#0091ea', '#00838f', '#827717', '#455a64'];
+    var random_color = colors[Math.floor(Math.random() * colors.length)];
+    $(this).css('color', random_color);
+  });
+
 
     $addcommentBtn.click(function() {
         this.disabled = true;
         csrftoken = getCookie('csrftoken');
-        $.ajaxSetup({  
-            beforeSend: function(xhr, settings) {  
-                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {  
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);  
-                }  
-            }  
-        });  
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
         var article = $('#comment').attr('uuid')
         var comment = $('#comment').val()
+        var nickname = $('#nickname').val()
+        var email = $('#email').val()
         var $cmts = $('.comment')
         var url = '/api/comment';
-        if (!comment || !article) {
-            alert("comment can not be empty.");
+        var dtime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+
+        if (!nickname) {
+          $('#nickname_div').addClass('is-invalid')
+          $('#nickname_div').addClass('is-dirty')
+          this.disabled=false;
+          return false;
+        };
+        if (!comment) {
+            $('#comment_div').addClass('is-invalid')
+            $('#comment_div').addClass('is-dirty')
             this.disabled=false;
             return false;
         };
+        if (!article) {
+          alert("illegal request")
+          this.disabled=false;
+          return false;
+        }
         $.ajax({
             url: '/api/comment/',
             type: 'PUT',
             dataType: 'json',
             data: {
                 'comment': comment,
-                'article': article
+                'article': article,
+                'email': email,
+                'nickname': nickname
             },
             cache: false,
             success: function(data) {
-                $cmts.append('<header class="comment__header"><img src="/static/images/co1.jpg" %}" class="comment__avatar"><div class="comment__author"><strong>someone</strong><span>just now</span></div></header><div class="comment__text">'+ comment +'</div>');
+                $cmts.append('<div><header class="comment__header"><div class="comment__author"><strong>' + nickname + '</strong></div><div class="comment__time"><strong>' + dtime + '</strong></div></header><div class="comment__text"> ' + comment + '</div></div>');
+                $('#comment').val("");
+                $('#email').val("");
+                $('#nickname').val("");
             },
-            error: function(xhr) {
-                alert("Network error");
+            error: function(xhr, status, error) {
+                alert(xhr.responseText);
             }
         });
-        $('#comment').val("");
         this.disabled=false;
         return false;
     });

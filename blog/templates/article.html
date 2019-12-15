@@ -1,52 +1,74 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% load article_filter %}
 {% block context %}
 
-    <div class="demo-blog demo-blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">
+    <div class="blog blog--blogpost mdl-layout mdl-js-layout has-drawer is-upgraded">
       <main class="mdl-layout__content">
         <div class="demo-back">
           <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="/" title="go back" role="button">
             <i class="material-icons" role="presentation">arrow_back</i>
           </a>
         </div>
-        <div class="demo-blog__posts mdl-grid">
+        <div class="blog__posts mdl-grid">
           <div class="mdl-card mdl-shadow--3dp mdl-cell mdl-cell--12-col">
-            <div class="mdl-card__media mdl-color-text--grey-50" style="background-image: url('{% static "images/road_big.jpg" %}');">
-              <h1 style="margin-bottom:40px;">{{title|safe}}</h1>
-              <span style="position:absolute;">{{ctime}} days ago</span>
+            <div class="mdl-card__media mdl-color-text--grey-50" style="background-image: url({{ image }});">
+                <div class="mdl-cell mdl-cell--middle">
+                    <h1 style="mdl-card__title-text">{{title|safe}}</h1>
+                    <span style="mdl-card__subtitle-text">{{ctime}}</span>
+                </div>
             </div>
+            <div clss='mdl-cell--3-col'>
+            </div>
+
             <div class="article_context">
                 {{ context|safe }}
             </div>
-            <div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments">
-              <form>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <textarea rows=1 class="mdl-textfield__input" uuid="{{uuid}}" id="comment"></textarea>
-                  <label for="comment" class="mdl-textfield__label">Join the discussion</label>
+        </div>
+        <div class="blog__posts mdl-grid">
+          <div class="mdl-card mdl-shadow--3dp mdl-cell mdl-cell--12-col">
+            <div class="mdl-card mdl-color-text--primary-contrast mdl-card__supporting-text comments">
+              <div>
+                <div id="nickname_div" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" >
+                  <textarea rows=1 class="mdl-textfield__input" uuid="{{uuid}}" id="nickname"></textarea>
+                  <label for="nickname" class="mdl-textfield__label">nickname</label>
+                  <span class = "mdl-textfield__error">make a nickname, please</span>
                 </div>
-                <button class="add-comment-btn mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <textarea rows=1 class="mdl-textfield__input" uuid="{{uuid}}" id="email"></textarea>
+                  <label for="email" class="mdl-textfield__label">email</label>
+                </div>
+            </div>
+            <div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" id="comment_div">
+                  <textarea rows=1 class="mdl-textfield__input resize" type='text' uuid="{{uuid}}" id="comment"></textarea>
+                  <label for="comment" class="mdl-textfield__label">say something</label>
+                  <span class = "mdl-textfield__error">any question?</span>
+                </div>
+                <button class="add-comment-btn mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-cell--2-col">
                   <i class="material-icons" role="presentation">check</i><span class="visuallyhidden">add comment</span>
                 </button>
-              </form>
+              </div>
               <div class="comment mdl-color-text--grey-700">
                 {% for comment in comments %}
-                <header class="comment__header">
-                     <img src="{% static "images/co1.jpg" %}" class="comment__avatar">
-                      <div class="comment__author">
-                        <strong>{{ comment.name }}</strong>
-                        <span>{{comment.time}} days ago</span>
-                      </div>
-                </header>
+                <div>
+                    <header class="comment__header">
+                        <div class="comment__author">
+                            <strong>{{ comment.nickname }}</strong>
+                        </div>
+                        <div class="comment__time">
+                            <strong>{{comment.time}} </strong>
+                        </div>
+                    </header>
                     <div class="comment__text">
                         {{comment.context}}
                     </div>
+                </div>
                 {% endfor %}
                 <!-- TODO:嵌套评论 
                 <div class="comment__answers">
                   <div class="comment">
                     <header class="comment__header">
-                      <img src="{% static "images/co2.jpg" %}" class="comment__avatar">
                       <div class="comment__author">
                         <strong>John Dufry</strong>
                         <span>2 days ago</span>
@@ -72,6 +94,7 @@
               </div>
             </div>
           </div>
+        </div>
 
           <nav class="demo-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
           <!--

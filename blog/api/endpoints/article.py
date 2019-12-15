@@ -51,7 +51,8 @@ class ArticleView(APIView):
             'context': data.context,
             'comments': comments,
             'uuid': uuid,
-            'ctime': data.create_time
+            'ctime': data.create_time,
+            'image': data.image
         })
 
     def post(self, request):
@@ -66,10 +67,13 @@ class CommentView(APIView):
     def put(self, request):
         article = request.data.get('article', None)
         comment = request.data.get('comment', None)
-        if comment:
-            ip = get_remote_ip(request)
-            dt = datetime.datetime.now()
-            Comment.objects.add_comment(article, ip, dt, comment)
+        email = request.data.get('email', '')
+        nickname = request.data.get('nickname', None)
+        if not comment or not nickname:
+            return Response('invalid type', status.HTTP_400_BAD_REQUEST)
+        ip = get_remote_ip(request)
+        dt = datetime.datetime.now()
+        Comment.objects.add_comment(article, ip, dt, nickname, comment, email)
         return Response({'success': True})
 
 

@@ -1,11 +1,8 @@
-from django.utils.translation import ugettext_lazy as _
-
 from rest_framework import exceptions
 from rest_framework.authentication import SessionAuthentication
 
-from blog.certificate.models import Certificate
 
-class MethodAuthentication():
+class MethodAuthentication(SessionAuthentication):
     def authenticate(self, request):
         if request.method == "GET":
             return None

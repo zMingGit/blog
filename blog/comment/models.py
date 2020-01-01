@@ -15,9 +15,7 @@ class CommentManager(models.Manager):
         return comments
 
     def add_comment(self, article, ip, dt, nickname, comment, email):
-        articleObj = Article.objects.get_article_by_id(article)
-        cmt = self.model(article=articleObj, ipaddress=ip, time=dt, context=comment, nickname=nickname, email=email)
-        cmt.save()
+        self.model(article=article, ipaddress=ip, time=dt, context=comment, nickname=nickname, email=email).save()
 
 
 class Comment(models.Model):

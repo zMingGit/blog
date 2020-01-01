@@ -7,8 +7,10 @@ from rest_framework.response import Response
 
 from .throttling import NoThrottling
 from .authentication import MethodAuthentication
-from blog.article.models import Article
+from blog.api.endpoints.common import get_remote_ip_and_ua
+from blog.article.models import Article, ArticleStatsRecord
 from blog.comment.models import Comment
+from blog.comment.views import add_comment
 
 
 class ArticleView(APIView):
@@ -17,6 +19,7 @@ class ArticleView(APIView):
     permission_classes = ()
 
     def get(self, request):
+        ip, ua = get_remote_ip_and_ua(request)
         op = request.GET.get('type', None)
         cmt_page = request.GET.get('cmt_page', 1)
         if not isinstance(cmt_page, int):
@@ -31,28 +34,29 @@ class ArticleView(APIView):
             if uuid is None:
                 return Response('uuid can not be empty',
                                 status.HTTP_400_BAD_REQUEST)
-            data = Article.objects.get_article_by_id(uuid)
+            article = Article.objects.get_article_by_id(uuid)
         elif op == 'title':
             title = request.GET.get('title', None)
             if title is None:
                 return Response('title can not be empty',
                                 status.HTTP_400_BAD_REQUEST)
-            data = Article.objects.get_article_by_title(title)
+            article = Article.objects.get_article_by_title(title)
 
-        if data is None:
+        if article is None:
             return Response("can't found this article")
         re_html = re.compile('<.*?>')
-        data.title = re_html.sub('', data.title)
-        uuid = data.uuid
+        article.title = re_html.sub('', article.title)
+        uuid = article.uuid
 
-        comments = Comment.objects.get_comment_by_page(data.uuid, cmt_page)
+        comments = Comment.objects.get_comment_by_page(article.uuid, cmt_page)
+        ArticleStatsRecord.objects.create_visit_record(article, ip, ua)
         return render(request, 'article.html', {
-            'title': data.title,
-            'context': data.context,
+            'title': article.title,
+            'context': article.context,
             'comments': comments,
             'uuid': uuid,
-            'ctime': data.create_time,
-            'image': data.image
+            'ctime': article.create_time,
+            'image': article.image
         })
 
     def post(self, request):
@@ -71,16 +75,7 @@ class CommentView(APIView):
         nickname = request.data.get('nickname', None)
         if not comment or not nickname:
             return Response('invalid type', status.HTTP_400_BAD_REQUEST)
-        ip = get_remote_ip(request)
+        ip, ua = get_remote_ip_and_ua(request)
         dt = datetime.datetime.now()
-        Comment.objects.add_comment(article, ip, dt, nickname, comment, email)
+        add_comment(article, ip, ua, dt, nickname, comment, email)
         return Response({'success': True})
-
-
-def get_remote_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR', '-')
-    return ip

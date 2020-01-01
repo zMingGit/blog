@@ -97,8 +97,14 @@
                  {{ article.intro|safe }}
                </div>
                <div class="authorCard mdl-card__supporting-text meta mdl-color-text--grey-600">
-                 <div>
-                   <span>编辑于 {{ article.create_time }}</span>
+                 <div class="mdl-cell--10-col">
+                   <span >编辑于 {{ article.create_time }}</span>
+                 </div>
+                 <div class="mdl-cell--1-col">
+                   <span > {{article.n_visits}} 次浏览 </span>
+                 </div>
+                 <div class="mdl-cell--1-col">
+                   <span > {{article.n_comments}} 个想法 </span>
                  </div>
                </div>
              </div>

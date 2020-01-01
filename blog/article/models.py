@@ -6,6 +6,7 @@ from collections import Iterable
 from django.db import models
 from django.db.models import Count
 from blog.api.endpoints.constant import ALLOWED_TAGS
+from blog.article.const import RecordType
 
 
 class ArticleManager(models.Manager):
@@ -58,6 +59,26 @@ class ArticleManager(models.Manager):
     def get_all_article_type_and_count(self):
         return super(ArticleManager, self).values_list('article_type__atype', 'article_type__uuid', ).annotate(Count('uuid'))
 
+    def add_record_time(self, article_uuid, record_type):
+        article = super(ArticleManager, self).get(uuid=article_uuid)
+        if record_type == RecordType.VISIT:
+            article.n_visits = models.F('n_visits') + 1
+        elif record_type == RecordType.COMMENT:
+            article.n_comments = models.F('n_comments') + 1
+        article.save()
+
+
+class ArticleStatsRecord(models.Manager):
+    def create_visit_record(self, article, ip, ua):
+        record_type = RecordType.VISIT
+        self.model(uuid=uuid.uuid4(), ip=ip, ua=ua, article=article, record_type=record_type).save()
+        Article.objects.add_record_time(article.uuid, record_type)
+
+    def create_comment_record(self, article, ip, ua):
+        record_type = RecordType.COMMENT
+        self.model(uuid=uuid.uuid4(), ip=ip, ua=ua, article=article, record_type=record_type).save()
+        Article.objects.add_record_time(article.uuid, record_type)
+
 
 class ArticleType(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
@@ -74,5 +95,18 @@ class Article(models.Model):
     context = models.TextField()
     article_type = models.ForeignKey(ArticleType, on_delete=models.CASCADE)
     create_time = models.DateTimeField(default=timezone.now)
+    n_visits = models.IntegerField(default=0)
+    n_comments = models.IntegerField(default=0)
     image = models.CharField(max_length=90)
     objects = ArticleManager()
+
+
+class ArticleStatsRecord(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    ip = models.GenericIPAddressField()
+    ua = models.CharField(max_length=100)
+    record_type = models.IntegerField()
+    article = models.ForeignKey('Article', on_delete=models.PROTECT)
+    create_time = models.DateTimeField(auto_now=True)
+    update_time = models.DateTimeField(auto_now=True)
+    objects = ArticleStatsRecord()

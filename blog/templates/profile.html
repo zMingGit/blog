@@ -10,8 +10,13 @@
             <i class="material-icons" role="presentation">arrow_back</i>
           </a>
         </div>
-  <div class="profile">
-  <p> 我命由天不由我                   </p>
+       {% if item %}
+        <div class="item">
+            <p class="item-content"> {{item.content}}                   </p>
+            <p class="item-origin">   --{{item.content_origin}}</p>
+        </div>
+      {% else %}
+      {% endif %}
   </div>
       </main>
     </div>

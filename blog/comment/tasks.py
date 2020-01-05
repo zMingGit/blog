@@ -9,7 +9,7 @@ def comment_noti(nickname, article_title):
     send_mail(
         '评论通知',
         '%s 给你的博文 %s 留了言',
-        'email@zming.info',
+        '2585994482@qq.com',
         ['email@zming.info'],
         fail_silently=False,
     )

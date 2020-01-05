@@ -9,7 +9,7 @@ from blog.settings import SENDER_MAIL, RECEIVER_MAIL
 def comment_noti(nickname, article_title):
     send_mail(
         '评论通知',
-        '%s 给你的博文 %s 留了言',
+        '%s 给你的博文 %s 留了言' % (nickname, article_title),
         SENDER_MAIL,
         [RECEIVER_MAIL],
         fail_silently=False,

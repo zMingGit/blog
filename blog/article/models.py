@@ -104,7 +104,7 @@ class Article(models.Model):
 class ArticleStatsRecord(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     ip = models.GenericIPAddressField()
-    ua = models.CharField(max_length=100)
+    ua = models.CharField(max_length=300)
     record_type = models.IntegerField()
     article = models.ForeignKey('Article', on_delete=models.PROTECT)
     create_time = models.DateTimeField(auto_now=True)

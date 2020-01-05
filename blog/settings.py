@@ -147,11 +147,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-try:
-    from local_settings import *  # noqa
-except ImportError:
-    pass
-
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -164,3 +159,9 @@ EMAIL_USE_TLS = False
 
 SNEDER_MAIL = 'TBD'
 RECEIVER_MAIL = 'TBD'
+
+try:
+    from local_settings import *  # noqa
+except ImportError:
+    pass
+

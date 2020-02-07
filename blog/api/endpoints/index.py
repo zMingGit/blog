@@ -55,7 +55,7 @@ class IndexView(APIView):
             more = True
 
         if reduce_one and len(articles) == count:
-            articles = articles[:-1]
+            articles = articles[:count - 1]
 
         return render(request, "index.html", {
             'articles': articles,

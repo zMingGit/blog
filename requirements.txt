@@ -2,7 +2,7 @@ amqp==2.5.2
 asgiref==3.2.3
 billiard==3.6.1.0
 celery==4.4.0
-Django==3.0
+Django==3.0.3
 django-appconf==1.0.3
 -e git://github.com/django-compressor/django-compressor.git@a5bfd775450428e1a261b88e1e5424bfb4dde081#egg=django_compressor
 djangorestframework==3.11.0
